@@ -2,7 +2,8 @@
 
 * [Ceph](README.md)
 * [Ceph 有哪些角色](ceph-you-na-xie-jiao-se.md)
-* [用CentOS 7環境建置 Ceph](yong-centos-7-jing-jian-zhi-ceph.md)
+* [用CentOS 7環境建置 Ceph](centos-7-ceph-cluster-note.md)
+* [OSD 新增與管理](ceph-osd-note.md)
 * [OSD BlueStore](osd-bluestore.md)
 * [CentOS 7 + Ceph 環境操作](yong-centos-7-jing-jian-zhi-ceph-2.md)
 * [新增 mon / mgr role](xin-zeng-monitors-node.md)
