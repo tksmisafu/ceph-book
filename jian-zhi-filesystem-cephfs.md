@@ -1,7 +1,3 @@
----
-description: ADD A METADATA SERVER
----
-
 # 建置 Filesystem CephFS
 
 使用 CephFS 服務，得需要有個 matadata server，建立方式如下：
