@@ -1,0 +1,2 @@
+# OSD / Pool / image Replica
+

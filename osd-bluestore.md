@@ -1,6 +1,10 @@
 # OSD BlueStore
 
+### BlueStore OSD Create
+
 ```bash
+# 啟用 WAL & DB，則需獨立 SSD GPT Partition(各別區分）
+# 新建立 GPT Partition 在 SSD 磁碟上。
 sudo fdisk /dev/sdc
 Command (m for help): g
 Building a new GPT disklabel (GUID: 244DE7B4-55D4-4D11-8B48-990B7977D1BC)
@@ -19,6 +23,7 @@ The partition table has been altered!
 Calling ioctl() to re-read partition table.
 Syncing disks.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 確認磁區 /dev/sdc1 取得 PARTUUID
 [afu@dev-ceph-osd1 ~]$ sudo blkid
 /dev/mapper/centos_c7--1804-root: UUID="c4db2fc5-7a90-46a7-8948-09e2f3b1cb42" TYPE="xfs"
 /dev/sda2: UUID="f4pYhx-y0Gq-r1Vb-uVD2-fSIT-95zN-UgjyHW" TYPE="LVM2_member"
@@ -27,14 +32,29 @@ Syncing disks.
 /dev/sdc1: PTTYPE="dos" PARTUUID="de371b93-029b-448f-957b-a57b0f501858"
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+# in Ceph admin node 新增 Bluestore OSD with WAL & DB
 ceph-deploy osd create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc2 dev-ceph-osd1
 ceph-deploy osd create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc2 dev-ceph-osd1
+參數說明
+    --data /dev/sdb          << OSD 磁碟區
+    --block-db /dev/sdc1     << bluestore db 磁區
+    --block-wal /dev/sdc2    << bluestore wal 磁區
+    --bluestore              << bluestore OSD type
+    dev-ceph-osd1            << OSD node
 
-    --data /dev/sdb \
-    --block-db /dev/sdc1 \
-    --block-wal /dev/sdc2 \
-    --bluestore node1
+# 另一個方式
+# in Ceph OSD node 新增 Bluestore OSD with WAL & DB
+ceph-volume lvm create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc2 dev-ceph-osd1
+```
+
+### 查看 OSD
+
+```bash
+# in Ceph OSD node
+ceph-volume lvm list
+
+# OSD 目錄
+sudo ls -al /var/lib/ceph/osd/ceph-0
 ```
 
 OSD  

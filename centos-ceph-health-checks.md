@@ -4,11 +4,34 @@
 
 ```bash
 # 檢查集群健康狀態，下面兩個方式皆可
-ceph health
-ssh node1 sudo ceph health
+# ceph health
+
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph health
+HEALTH_WARN too few PGs per OSD (19 < min 30)
+
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph health detail
+HEALTH_WARN too few PGs per OSD (19 < min 30)
+TOO_FEW_PGS too few PGs per OSD (19 < min 30)
 
 # 查看集群 cluster\services\data 狀態，下面兩個方式皆可
-ceph status
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph status
+  cluster:
+    id:     ba84d7fd-92dd-4cca-a4c4-175a70c5e2ed
+    health: HEALTH_WARN
+            too few PGs per OSD (19 < min 30)
+
+  services:
+    mon: 1 daemons, quorum dev-ceph-mon
+    mgr: dev-ceph-mon.kingbay-tech.com(active)
+    osd: 5 osds: 5 up, 5 in
+    rgw: 1 daemon active
+
+  data:
+    pools:   4 pools, 32 pgs
+    objects: 219  objects, 1.1 KiB
+    usage:   14 GiB used, 95 GiB / 109 GiB avail
+    pgs:     32 active+clean
+#
 ssh node1 sudo ceph -s
 
 ```
@@ -22,7 +45,7 @@ full_ratio 0.95
 backfillfull_ratio 0.9
 nearfull_ratio 0.85
 
-# Size 查看
+# This is an early warning that the cluster is approaching full.
 [ceph-admin@dev-ceph-mon ceph-cluster]$ ceph df
 GLOBAL:
     SIZE        AVAIL      RAW USED     %RAW USED
@@ -33,6 +56,18 @@ POOLS:
     default.rgw.control     2          0 B         0        22 GiB           8
     default.rgw.meta        3          0 B         0        22 GiB           0
     default.rgw.log         4          0 B         0        22 GiB         207
+
+# One or more pools has reached its quota and is no longer allowing writes.
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph df detail
+GLOBAL:
+    SIZE        AVAIL      RAW USED     %RAW USED     OBJECTS
+    109 GiB     95 GiB       14 GiB         13.09        219
+POOLS:
+    NAME                    ID     QUOTA OBJECTS     QUOTA BYTES     USED        %USED     MAX AVAIL     OBJECTS     DIRTY     READ        WRITE       RAW USED
+    .rgw.root               1      N/A               N/A             1.1 KiB         0        22 GiB           4        4         12 B         4 B      3.4 KiB
+    default.rgw.control     2      N/A               N/A                 0 B         0        22 GiB           8        8          0 B         0 B          0 B
+    default.rgw.meta        3      N/A               N/A                 0 B         0        22 GiB           0        0          0 B         0 B          0 B
+    default.rgw.log         4      N/A               N/A                 0 B         0        22 GiB         207      207      436 KiB     291 KiB          0 B
 ```
 
 {% hint style="info" %}
