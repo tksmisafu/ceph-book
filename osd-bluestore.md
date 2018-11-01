@@ -28,10 +28,12 @@ Syncing disks.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ceph-deploy osd create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc1 dev-ceph-osd1 \
+ceph-deploy osd create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc2 dev-ceph-osd1
+ceph-deploy osd create --data /dev/sdb --bluestore --block-db /dev/sdc1 --block-wal /dev/sdc2 dev-ceph-osd1
+
     --data /dev/sdb \
     --block-db /dev/sdc1 \
-    --block-wal /dev/sdc1 \
+    --block-wal /dev/sdc2 \
     --bluestore node1
 ```
 

@@ -1,4 +1,4 @@
-# 新增 mon / mgr role
+# Ceph mon / mgr Cluster
 
 稍早，環境中已經建立第一個 mon / mgr 角色於 node1上，monitor 角色是不可中斷服務的一環  
 故需要搭建第二、三台 monitor node，方式如下：

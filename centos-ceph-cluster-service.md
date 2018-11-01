@@ -1,4 +1,4 @@
-# CentOS 7 + Ceph 環境操作
+# CentOS 7 Ceph 集群與服務
 
 ### 集群狀態查看
 
