@@ -1,4 +1,4 @@
-# CentOS 7 Ceph 集群與服務
+# CentOS 7 Ceph health-checks
 
 ### 集群狀態查看
 
@@ -12,6 +12,33 @@ ceph status
 ssh node1 sudo ceph -s
 
 ```
+
+### Cluster & Pool size 查看
+
+```bash
+# full ratio 查看
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph osd dump | grep full_ratio
+full_ratio 0.95
+backfillfull_ratio 0.9
+nearfull_ratio 0.85
+
+# Size 查看
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph df
+GLOBAL:
+    SIZE        AVAIL      RAW USED     %RAW USED
+    109 GiB     95 GiB       14 GiB         13.09
+POOLS:
+    NAME                    ID     USED        %USED     MAX AVAIL     OBJECTS
+    .rgw.root               1      1.1 KiB         0        22 GiB           4
+    default.rgw.control     2          0 B         0        22 GiB           8
+    default.rgw.meta        3          0 B         0        22 GiB           0
+    default.rgw.log         4          0 B         0        22 GiB         207
+```
+
+{% hint style="info" %}
+文章出處：  
+[http://docs.ceph.com/docs/mimic/rados/operations/health-checks/](http://docs.ceph.com/docs/mimic/rados/operations/health-checks/)
+{% endhint %}
 
 ### 集群 service 操作
 

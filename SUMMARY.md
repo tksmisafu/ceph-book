@@ -3,7 +3,7 @@
 * [Ceph](README.md)
 * [Ceph 有哪些角色](ceph-you-na-xie-jiao-se.md)
 * [用CentOS 7環境建置 Ceph](centos-7-ceph-cluster-note.md)
-* [CentOS 7 Ceph 集群與服務](centos-ceph-cluster-service.md)
+* [CentOS 7 Ceph health-checks](centos-ceph-health-checks.md)
 * [OSD 新增與管理](ceph-osd-note.md)
 * [OSD BlueStore](osd-bluestore.md)
 * [Ceph mon / mgr Cluster](ceph-mon-mgr-cluster.md)

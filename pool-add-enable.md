@@ -72,7 +72,11 @@ ceph osd pool set-quota data max_objects 10000
 ### GET POOL VALUES
 
 ```bash
-osd pool get {pool-name} {key}
+# osd pool get {pool-name} {key}
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph osd pool get .rgw.root size
+size: 3
+[ceph-admin@dev-ceph-mon ceph-cluster]$ ceph osd pool get .rgw.root min_size
+min_size: 2
 ```
 
 {% hint style="info" %}
