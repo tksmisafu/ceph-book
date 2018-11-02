@@ -8,6 +8,7 @@
 * [OSD BlueStore](osd-bluestore.md)
 * [Ceph mon / mgr Cluster](ceph-mon-mgr-cluster.md)
 * [Pool add / enable / status](pool-add-enable.md)
+* [Pool 指定 OSD](pool-zhi-ding-osd.md)
 * [Pool & Placement Group 配置](pool-pg-config.md)
 * [OSD / Pool / image Replica](replica.md)
 * [建置 Filesystem CephFS](jian-zhi-filesystem-cephfs.md)

@@ -31,6 +31,11 @@ ceph health
 ```
 
 {% hint style="info" %}
+`osd prepare` + `osd activate` = `osd create`  
+[http://docs.ceph.com/docs/master/ceph-volume/lvm/create/](http://docs.ceph.com/docs/master/ceph-volume/lvm/create/)
+{% endhint %}
+
+{% hint style="info" %}
 peering 完成后，集群应该达到`active + clean`状态。  
 OSD 目錄：/var/lib/ceph/osd/{osd.id}
 {% endhint %}
