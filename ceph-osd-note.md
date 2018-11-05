@@ -83,7 +83,17 @@ sudo ceph osd out 1
 ## Remove OSD
 
 ```bash
-# in OSD node
+# in OSD node，remove osd step
+# step 1 先將 osd out
+sudo ceph osd out 1
+# step 2 停止 osd service
+sudo systemctl stop ceph-osd@1
+# step 3 purge all osd data from the monitors.
+sudo ceph osd purge 1 --yes-i-really-mean-it
+# step 4 remove lvm layer
+sudo ceph-volume lvm zap /dev/sdc --destroy
+
+
 sudo ceph osd out 1
 sudo systemctl stop ceph-osd@1
 # osd purge <osdname (id|osd.id)> {--yes-i-really-mean-it}  
