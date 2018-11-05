@@ -11,8 +11,8 @@
 * For calculating `pg_num` value by yourself please take help of [pgcalc](http://ceph.com/pgcalc/) tool
 
 PG 數量，是基於 OSD、pool replica 等因素計算出來  
-例如 20 OSD、pg\_num 1024、pool replica 3  
-則計算方式 $$1024*3/20=153.6$$ Placement Groups
+~~例如 20 OSD、pg\_num 1024、pool replica 3~~  
+~~則計算方式~~ $$1024*3/20=153.6$$ ~~Placement Groups~~
 
 官方 PG 計算工具：[https://ceph.com/pgcalc/](https://ceph.com/pgcalc/)
 
