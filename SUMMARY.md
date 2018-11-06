@@ -11,6 +11,7 @@
 * [Pool 指定 OSD](pool-zhi-ding-osd.md)
 * [Pool & Placement Group 配置](pool-pg-config.md)
 * [OSD / Pool / image Replica](replica.md)
+* [Ceph Metadata Server \(MDS\) Architecture](mds-architecture.md)
 * [建置 Filesystem CephFS](jian-zhi-filesystem-cephfs.md)
 * [建置 Block Device RBD​](jian-zhi-block-device-rbd.md)
 * [建置 Object storage RADOS Gateway​](jian-zhi-object-storage-rados-gateway.md)
