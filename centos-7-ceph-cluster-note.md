@@ -57,6 +57,7 @@ echo "{username} ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/{username}
 echo "Defaults:{username} !requiretty" | sudo tee /etc/sudoers.d/{username}
 sudo chmod 0440 /etc/sudoers.d/{username}
 su {username}
+ssh-keyscan ceph-mon1 ceph-osd1 ceph-osd2 ceph-osd3 >> ~/.ssh/known_hosts
 ssh-keygen
 ssh-copy-id {username}@node1
 ssh-copy-id {username}@node2
@@ -66,7 +67,15 @@ ssh-copy-id {username}@node3
 #### 開設網路存取權 && 設定 Firewalld
 
 ```bash
-sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
+# ??
+ssh ceph-mon1 'sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent && sudo firewall-cmd --reload'
+
+# on Monitor node
+ssh ceph-mon-232 'sudo firewall-cmd --zone=public --add-service=ceph-mon --permanent && sudo firewall-cmd --reload'
+
+# on OSD node
+ssh ceph-osd-1 'sudo firewall-cmd --zone=public --add-service=ceph --permanent && sudo firewall-cmd --reload'
+
 ```
 
 ### 創建集群
@@ -76,24 +85,25 @@ sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 ```bash
 mkdir my-cluster
 cd my-cluster
-# 初始創建集群，在 Monitor 節點執行指令（initial-monitor-node）
+
+# 1.Create the cluster 初始創建集群，在 Monitor 節點執行指令（initial-monitor-node）
 ceph-deploy new node1
-# 上述執行後，會產出三份檔案：ceph.conf 配置文件、ceph.mon.keyring 密鑰和 ceph-deploy-ceph.log 日誌文件。
+# 上述執行後，會產出三份檔案：
+# ceph.conf 配置文件、
+# ceph.mon.keyring 密鑰 和 
+# ceph-deploy-ceph.log 日誌文件。
 
-# 如模擬兩個OSD環境下，設定副本數可以呈現 “active + clean” 系統狀態
-# ceph.conf 文件內 [global] 段落
-osd pool default size = 2
-
-# 如有多張網卡，請將 public network 設定於 ceph.conf 文件的 [global] 段落下
-# [global] 段
-public network = {ip-address}/{netmask}
-
-# 開始安裝 ceph 在各節點上
+# 2.Install Ceph packages 開始安裝 ceph 在各節點上
 ceph-deploy install admin-node node1 node2 node3
+# 此步驟在 admin-node 上出現錯誤：RuntimeError: NoSectionError: No section: 'ceph'
+# 進行除錯：yum remove ceph-release && rm /etc/yum.repos.d/ceph.repo
+# 再重新 ceph-deploy install 即可正常安裝。
+# 安裝成功後訊息：
+[ceph-osd-1][DEBUG ] Complete!
+[ceph-osd-1][INFO  ] Running command: sudo ceph --version
+[ceph-osd-1][DEBUG ] ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
 
-# 如果需要重置復原(反安裝概念)，下指令
-ceph-deploy purge admin-node node1 node2 node3
-
+# Deploy the initial monitor(s) and gather the keys
 # 初始化 Monitor 服務，並收集各節點密鑰
 ceph-deploy mon create-initial
 # 完成後 會出現下列密鑰檔
@@ -104,11 +114,12 @@ ceph-deploy mon create-initial
 {cluster-name}.bootstrap-rgw.keyring
 
 # 以ceph命令檢查密鑰:
-ceph-deploy gatherkeys ceph-mon
+# ceph-deploy gatherkeys ceph-mon
+# 執行結果：[ceph_deploy][ERROR ] RuntimeError: connecting to host: ceph-mon resulted in errors: HostNotFound ceph-mon
 
 # 透過 ceph-deploy 將配置與 admin密鑰傳送到管理節點與 OSD 節點，便於未來執行 Ceph 指令。
 # ceph-deploy admin {admin-node} {ceph-node}
-ceph-deploy admin admin-node node1 node2 node3
+ceph-deploy --overwrite-conf admin admin-node1 {admin-node2}
 
 # 確保有此檔案的讀取權限
 sudo chmod +r /etc/ceph/ceph.client.admin.keyring
@@ -116,4 +127,27 @@ sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 # 部署 manager daemon
 ceph-deploy mgr create node1
 ```
+
+```bash
+# 如模擬兩個OSD環境下，設定副本數可以呈現 “active + clean” 系統狀態
+# ceph.conf 文件內 [global] 段落
+osd pool default size = 2
+
+# 如有多張網卡，請將 public network 設定於 ceph.conf 文件的 [global] 段落下
+# [global] 段
+public network = {ip-address}/{netmask}
+
+```
+
+```bash
+
+# 如果需要重置復原(反安裝概念)，下指令
+ceph-deploy purge admin-node node1 node2 node3
+```
+
+{% hint style="info" %}
+文章出處：  
+[http://docs.ceph.com/docs/mimic/start/quick-start-preflight/](http://docs.ceph.com/docs/mimic/start/quick-start-preflight/)  
+[http://docs.ceph.com/docs/mimic/start/quick-ceph-deploy/\#create-a-cluster](http://docs.ceph.com/docs/mimic/start/quick-ceph-deploy/#create-a-cluster)
+{% endhint %}
 
