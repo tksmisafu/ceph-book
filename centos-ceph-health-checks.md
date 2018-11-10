@@ -36,6 +36,26 @@ ssh node1 sudo ceph -s
 
 ```
 
+```bash
+# 查看 ceph-mon service status
+[ceph-admin@ceph-mon-1 prod-cluster]$ systemctl status ceph-mon@ceph-mon-1
+● ceph-mon@ceph-mon-1.service - Ceph cluster monitor daemon
+   Loaded: loaded (/usr/lib/systemd/system/ceph-mon@.service; enabled; vendor preset: disabled)
+   Active: active (running) since Fri 2018-11-09 18:00:27 CST; 1min 10s ago
+ Main PID: 9935 (ceph-mon)
+   CGroup: /system.slice/system-ceph\x2dmon.slice/ceph-mon@ceph-mon-1.service
+           └─9935 /usr/bin/ceph-mon -f --cluster ceph --id ceph-mon-1 --setuser ceph --setgroup ceph
+
+# 查看 ceph-mgr service status
+[ceph-admin@ceph-mon-1 prod-cluster]$ systemctl status ceph-mgr@ceph-mon-1
+● ceph-mgr@ceph-mon-1.service - Ceph cluster manager daemon
+   Loaded: loaded (/usr/lib/systemd/system/ceph-mgr@.service; enabled; vendor preset: disabled)
+   Active: active (running) since Fri 2018-11-09 18:00:27 CST; 1min 22s ago
+ Main PID: 9921 (ceph-mgr)
+   CGroup: /system.slice/system-ceph\x2dmgr.slice/ceph-mgr@ceph-mon-1.service
+           └─9921 /usr/bin/ceph-mgr -f --cluster ceph --id ceph-mon-1 --setuser ceph --setgroup ceph
+```
+
 ### Cluster & Pool size 查看
 
 ```bash

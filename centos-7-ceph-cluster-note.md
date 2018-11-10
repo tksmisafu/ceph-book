@@ -128,6 +128,22 @@ sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 ceph-deploy mgr create node1
 ```
 
+### 配置管理
+
+如有新增、異動 ceph.conf 時，需要重新推送配置
+
+```bash
+vi /etc/ceph/ceph.conf
+mon_allow_pool_delete = true
+osd_pool_default_pg_num = 1024
+osd_pool_default_pgp_num = 1024
+###
+ceph-deploy --overwrite-conf config push ceph-mon-1 ceph-mon-2 ceph-mon-3
+sudo systemctl restart ceph/*
+ssh ceph-mon-2 'sudo systemctl restart ceph/*'
+ssh ceph-mon-3 'sudo systemctl restart ceph/*'
+```
+
 ```bash
 # 如模擬兩個OSD環境下，設定副本數可以呈現 “active + clean” 系統狀態
 # ceph.conf 文件內 [global] 段落

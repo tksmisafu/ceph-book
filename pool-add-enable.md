@@ -79,6 +79,35 @@ size: 3
 min_size: 2
 ```
 
+```bash
+# demo ceph pool add && status
+sudo ceph osd pool create afu-pool 0 0
+
+sudo ceph osd pool get afu-pool size
+size: 3
+
+sudo ceph osd pool get afu-pool pg_num
+pg_num: 1024
+
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph status
+  cluster:
+    id:     4ab0a924-e5fd-4048-8cef-4d70697ba106
+    health: HEALTH_WARN
+            Reduced data availability: 1024 pgs inactive
+
+  services:
+    mon: 3 daemons, quorum ceph-mon-231,ceph-mon-232,ceph-mon-233
+    mgr: ceph-mon-231(active), standbys: ceph-mon-232, ceph-mon-233
+    osd: 20 osds: 20 up, 20 in
+
+  data:
+    pools:   1 pools, 1024 pgs
+    objects: 0  objects, 0 B
+    usage:   0 B used, 0 B / 0 B avail
+    pgs:     100.000% pgs unknown
+             1024 unknown
+```
+
 {% hint style="info" %}
 參考文件：  
 [http://docs.ceph.com/docs/mimic/rados/operations/pools/\#create-a-pool](http://docs.ceph.com/docs/mimic/rados/operations/pools/#create-a-pool)​
