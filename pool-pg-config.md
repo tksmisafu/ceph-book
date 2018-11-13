@@ -16,6 +16,19 @@ PG 數量，是基於 OSD、pool replica 等因素計算出來
 
 官方 PG 計算工具：[https://ceph.com/pgcalc/](https://ceph.com/pgcalc/)
 
+從計算工具中，發現 pool 空間使用率概念，當使用率升高時，PG 數量也隨之要調整。
+
+![20% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image%20%281%29.png)
+
+![70% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image%20%282%29.png)
+
+那...意即～ 管理員須適時調整PG數量，維持 Ceph recovery 效率。
+
+{% hint style="warning" %}
+上面是常見的建議做法。  
+下面是我自己的遐想～
+{% endhint %}
+
 對於設置多少的 PG 才是合理的，我從非公式的概念去想
 
 ```text
