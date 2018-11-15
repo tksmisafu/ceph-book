@@ -45,6 +45,43 @@ $ ceph fs ls
 cephfs-1/1/1 up {0=a=up:active}   << 這是範例
 ```
 
+### 觀察 filesystem
+
+```bash
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs ls
+name: gitlab_fs, metadata pool: p_fs_metadata, data pools: [p_fs_data ]
+
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph mds stat
+gitlab_fs-1/1/1 up  {0=ceph-mon-233=up:active}, 2 up:standby
+
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs status
+gitlab_fs - 0 clients
+=========
++------+--------+--------------+---------------+-------+-------+
+| Rank | State  |     MDS      |    Activity   |  dns  |  inos |
++------+--------+--------------+---------------+-------+-------+
+|  0   | active | ceph-mon-233 | Reqs:    0 /s |    0  |    0  |
++------+--------+--------------+---------------+-------+-------+
++---------------+----------+-------+-------+
+|      Pool     |   type   |  used | avail |
++---------------+----------+-------+-------+
+| p_fs_metadata | metadata |    0  |    0  |
+|   p_fs_data   |   data   |    0  |    0  |
++---------------+----------+-------+-------+
++--------------+
+| Standby MDS  |
++--------------+
+| ceph-mon-231 |
+| ceph-mon-232 |
++--------------+
+MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
+
+```
+
+{% hint style="warning" %}
+問題：如何決定此 cephfs 空間大小？
+{% endhint %}
+
 {% hint style="info" %}
 參考連結：  
 [http://docs.ceph.com/docs/master/cephfs/createfs/](http://docs.ceph.com/docs/master/cephfs/createfs/)
