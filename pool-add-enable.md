@@ -44,12 +44,8 @@ total_space      109 GiB
 
 ```bash
 [ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool ls detail
-pool 2 'arkfs_data' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 1024 pgp_num 1024 last_change 93 flags hashpspool stripe_width 0 application cephfs
-pool 3 'arkfs_meta' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 128 pgp_num 128 last_change 93 flags hashpspool stripe_width 0 application cephfs
-pool 4 'arkfs_data2' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 64 pgp_num 64 last_change 106 flags hashpspool stripe_width 0 application cephfs
-pool 5 'arkfs_data3' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 64 pgp_num 64 last_change 97 flags hashpspool stripe_width 0
-pool 6 'arkfs_meta2' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 64 pgp_num 64 last_change 106 flags hashpspool stripe_width 0 application cephfs
-pool 7 'arkfs_meta3' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 64 pgp_num 64 last_change 103 flags hashpspool stripe_width 0
+pool 8 'p_fs_data' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 512 pgp_num 512 last_change 151 lfor 0/144 flags hashpspool stripe_width 0 application cephfs
+pool 9 'p_fs_metadata' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 512 pgp_num 512 last_change 148 lfor 0/146 flags hashpspool stripe_width 0 application cephfs
 ```
 
 ### SET POOL QUOTAS
@@ -59,6 +55,21 @@ ceph osd pool set-quota {pool-name} [max_objects {obj-count}] [max_bytes {bytes}
 
 # example:
 ceph osd pool set-quota data max_objects 10000
+```
+
+### Set pool pg\_num  pgp\_num
+
+```bash
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_data pg_num 512
+set pool 8 pg_num to 512
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_data pgp_num 512
+set pool 8 pgp_num to 512
+
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_metadata pg_num 512
+set pool 9 pg_num to 512
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_metadata pgp_num 512
+set pool 9 pgp_num to 512
+
 ```
 
 ### DELETE A POOL

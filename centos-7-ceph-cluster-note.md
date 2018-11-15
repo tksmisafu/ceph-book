@@ -67,15 +67,18 @@ ssh-copy-id {username}@node3
 #### 開設網路存取權 && 設定 Firewalld
 
 ```bash
-# ??
-ssh ceph-mon1 'sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent && sudo firewall-cmd --reload'
-
-# on Monitor node
+# on Ceph's Monitor Daemon node
 ssh ceph-mon-232 'sudo firewall-cmd --zone=public --add-service=ceph-mon --permanent && sudo firewall-cmd --reload'
 
-# on OSD node
-ssh ceph-osd-1 'sudo firewall-cmd --zone=public --add-service=ceph --permanent && sudo firewall-cmd --reload'
+# on MGR node
+ssh ceph-mon1 'sudo firewall-cmd --zone=public --add-port=6800/tcp --permanent && sudo firewall-cmd --reload'
 
+# on Ceph's Object Storage Daemons (OSD) or Metadata Server Daemons (MDS)
+ssh ceph-mon-232 'sudo firewall-cmd --zone=public --add-service=ceph --permanent && sudo firewall-cmd --reload'
+
+# 備註
+service=ceph = "tcp" port="6800-7300"
+service=ceph-mon = "tcp" port="3300" / "tcp" port="6789"
 ```
 
 ### 創建集群

@@ -17,4 +17,5 @@
 * [建置 Object storage RADOS Gateway​](jian-zhi-object-storage-rados-gateway.md)
 * [Ceph client 整合測試 Block Devices](ceph-client-zheng-he-block-devices.md)
 * [note: ceph-deploy osd create](note-ceph-deploy-osd-create.md)
+* [問題：ceph health](ceph-health.md)
 
