@@ -155,3 +155,77 @@ tcp    ESTAB      0      0      10.1.13.211:42704              10.1.13.232:6800
 [afu@mattermost-211 ~]$
 ```
 
+### 模擬 mds master change
+
+```bash
+[afu@ceph-mon-232 ~]$ sudo ceph fs status
+gitlab_fs - 1 clients
+=========
++------+--------+--------------+---------------+-------+-------+
+| Rank | State  |     MDS      |    Activity   |  dns  |  inos |
++------+--------+--------------+---------------+-------+-------+
+|  0   | active | ceph-mon-233 | Reqs:    0 /s |  164  |  150  |
++------+--------+--------------+---------------+-------+-------+
++--------------------+----------+-------+-------+
+|        Pool        |   type   |  used | avail |
++--------------------+----------+-------+-------+
+| gitlab_fs_metadata | metadata |  885k | 46.0T |
+|   gitlab_fs_data   |   data   |  294k | 46.0T |
++--------------------+----------+-------+-------+
++--------------+
+| Standby MDS  |
++--------------+
+| ceph-mon-231 |
+| ceph-mon-232 |
++--------------+
+MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
+
+################################################################################################
+# disable MDS master node 'ceph-mon-233'
+[afu@ceph-mon-232 ~]$ sudo ceph mds fail ceph-mon-233
+failed mds gid 44495
+################################################################################################
+
+[afu@ceph-mon-232 ~]$ sudo ceph fs status
+gitlab_fs - 1 clients
+=========
++------+--------+--------------+---------------+-------+-------+
+| Rank | State  |     MDS      |    Activity   |  dns  |  inos |
++------+--------+--------------+---------------+-------+-------+
+|  0   | active | ceph-mon-232 | Reqs:    0 /s |  164  |  150  |
++------+--------+--------------+---------------+-------+-------+
++--------------------+----------+-------+-------+
+|        Pool        |   type   |  used | avail |
++--------------------+----------+-------+-------+
+| gitlab_fs_metadata | metadata |  885k | 46.0T |
+|   gitlab_fs_data   |   data   |  294k | 46.0T |
++--------------------+----------+-------+-------+
++--------------+
+| Standby MDS  |
++--------------+
+| ceph-mon-231 |
+| ceph-mon-233 |
++--------------+
+MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
+```
+
+### 模擬恢復 mds & mon.1 尚未恢復
+
+```bash
+# Ceph Client node 尚未 mount 狀態
+[afu@mattermost-211 ~]$ sudo mount -t ceph 10.1.13.231:6789:/ /mnt/cephfs -o name=admin,secretfile=/etc/ceph/admin.secret
+mount error 110 = Connection timed out
+
+# 成功 mount
+[afu@mattermost-211 ~]$ sudo mount -t ceph 10.1.13.232:6789:/ /mnt/cephfs -o name=admin,secretfile=/etc/ceph/admin.secret
+
+[afu@mattermost-211 ~]$ sudo mount -l |grep ceph
+10.1.13.232:6789:/ on /mnt/cephfs type ceph (rw,relatime,name=admin,secret=<hidden>,acl,wsize=16777216)
+
+[afu@mattermost-211 ~]$ ss -anut |grep ESTAB |grep '10.1.13.23'
+tcp    ESTAB      0      0      10.1.13.211:55092              10.1.13.232:6800
+tcp    ESTAB      0      0      10.1.13.211:41934              10.1.13.232:6789
+[afu@mattermost-211 ~]$
+
+```
+
