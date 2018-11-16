@@ -27,6 +27,11 @@ one for data     and     one for metadata.
 ```bash
 $ ceph osd pool create cephfs_data <pg_num>
 $ ceph osd pool create cephfs_metadata <pg_num>
+
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool create gitlab_fs_data 128
+pool 'gitlab_fs_data' created
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool create gitlab_fs_metadata 128
+pool 'gitlab_fs_metadata' created
 ```
 
 ### enable the filesystem
@@ -37,12 +42,14 @@ $ ceph osd pool create cephfs_metadata <pg_num>
 
 $ ceph fs new <fs_name> <metadata> <data>
 # 範例
+[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs new gitlab_fs gitlab_fs_metadata gitlab_fs_data
+new fs with metadata pool 11 and data pool 10
 $ ceph fs new cephfs cephfs_metadata cephfs_data
 $ ceph fs ls
 
 # 查看 MDS 狀態
 $ ceph mds stat
-cephfs-1/1/1 up {0=a=up:active}   << 這是範例
+gitlab_fs-1/1/1 up  {0=ceph-mon-231=up:active}   << 這是範例
 ```
 
 ### 觀察 filesystem
@@ -93,7 +100,14 @@ MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimi
 
 ```bash
 sudo mkdir /mnt/mycephfs
+sudo yum install nfs-utils
 sudo mount -t ceph 192.168.0.1:6789:/ /mnt/mycephfs
+sudo mount -t ceph 192.168.100.170:6789:/ /mnt/mycephfs -o name=admin,secret=AQBXTdBbwQTHMBAAAmjSrBbh+ilLeXT1tpAyoA==
+
+# 觀察
+[afu@dev-jmeter01 ~]$ sudo dmesg | tail
+[931972.858029] libceph: mon0 192.168.100.170:6789 session established
+[931972.859088] libceph: client74238 fsid ba84d7fd-92dd-4cca-a4c4-175a70c5e2ed
 ```
 
 > If you have more than one filesystem，  
@@ -143,4 +157,63 @@ sudo systemctl enable ceph-fuse@/mnt.service
 [http://docs.ceph.com/docs/master/cephfs/fuse/](http://docs.ceph.com/docs/master/cephfs/fuse/)  
 [http://docs.ceph.com/docs/master/man/8/ceph-fuse/](http://docs.ceph.com/docs/master/man/8/ceph-fuse/)
 {% endhint %}
+
+## 移除 FS
+
+```bash
+[afu@ceph-mon-231 ~]$ 
+[afu@ceph-mon-231 ~]$ sudo systemctl stop ceph-mds\*
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo ceph mds fail 0
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo ceph fs status
+gitlab_fs - 0 clients
+=========
++------+--------+-----+----------+-----+------+
+| Rank | State  | MDS | Activity | dns | inos |
++------+--------+-----+----------+-----+------+
+|  0   | failed |     |          |     |      |
++------+--------+-----+----------+-----+------+
++---------------+----------+-------+-------+
+|      Pool     |   type   |  used | avail |
++---------------+----------+-------+-------+
+| p_fs_metadata | metadata | 2286  | 46.0T |
+|   p_fs_data   |   data   |    0  | 46.0T |
++---------------+----------+-------+-------+
++-------------+
+| Standby MDS |
++-------------+
++-------------+
++---------+---------+
+| version | daemons |
++---------+---------+
++---------+---------+
+[afu@ceph-mon-231 ~]$ sudo ceph fs rm gitlab_fs --yes-i-really-mean-it
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo ceph fs status
++-------------+
+| Standby MDS |
++-------------+
++-------------+
++---------+---------+
+| version | daemons |
++---------+---------+
++---------+---------+
+
+[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_metadata --yes-i-really-really-mean-it
+Error EPERM: WARNING: this will *PERMANENTLY DESTROY* all data stored in pool p_fs_metadata.  
+If you are *ABSOLUTELY CERTAIN* that is what you want, pass the pool name *twice*, followed by --yes-i-really-really-mean-it.
+
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_metadata p_fs_metadata --yes-i-really-really-mean-it
+pool 'p_fs_metadata' removed
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_data p_fs_data --yes-i-really-really-mean-it
+pool 'p_fs_data' removed
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-231 ~]$ sudo rm -rf /var/lib/ceph/mds/ceph-ceph-mon-231/
+[afu@ceph-mon-231 ~]$
+```
 

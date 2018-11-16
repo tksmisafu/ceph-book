@@ -93,7 +93,7 @@ sudo ceph osd purge 1 --yes-i-really-mean-it
 # step 4 remove lvm layer
 sudo ceph-volume lvm zap /dev/sdc --destroy
 
-
+##### 實作 #####
 sudo ceph osd out 1
 sudo systemctl stop ceph-osd@1
 # osd purge <osdname (id|osd.id)> {--yes-i-really-mean-it}  
@@ -105,6 +105,7 @@ sudo ceph osd purge 1 --yes-i-really-mean-it
 sudo ceph -s
 sudo ceph-volume lvm list
 
+# ?
 sudo ls -la /etc/systemd/system/multi-user.target.wants/ -1
 sudo systemctl disable ceph-volume@lvm-1-ed22e4cd-adfc-4201-8b5f-732a44e8f236.service
 
@@ -158,7 +159,51 @@ sudo ceph -w | -s
   -s, --status          show cluster status
   -w, --watch           watch live cluster changes
 
-sudo ceph osd tree
+[afu@dev-ceph-osd1 ~]$ ceph osd tree
+ID CLASS WEIGHT  TYPE NAME              STATUS REWEIGHT PRI-AFF
+-1       0.10623 root default
+-3       0.02829     host dev-ceph-osd1
+ 0   hdd 0.02829         osd.0              up  1.00000 1.00000
+-5       0.03897     host dev-ceph-osd2
+ 2   hdd 0.01949         osd.2              up  1.00000 1.00000
+ 3   hdd 0.01949         osd.3              up  1.00000 1.00000
+-7       0.03897     host dev-ceph-osd3
+ 4   hdd 0.01949         osd.4              up  1.00000 1.00000
+ 5   hdd 0.01949         osd.5              up  1.00000 1.00000
+
+[afu@dev-ceph-osd1 ~]$ ceph osd status
++----+--------------------------------+-------+-------+--------+---------+--------+---------+-----------+
+| id |              host              |  used | avail | wr ops | wr data | rd ops | rd data |   state   |
++----+--------------------------------+-------+-------+--------+---------+--------+---------+-----------+
+| 0  | dev-ceph-osd1.kingbay-tech.com | 10.0G | 18.9G |    0   |     0   |    0   |     0   | exists,up |
+| 2  | dev-ceph-osd2.kingbay-tech.com | 1077M | 18.9G |    0   |     0   |    0   |     0   | exists,up |
+| 3  | dev-ceph-osd2.kingbay-tech.com | 1078M | 18.9G |    0   |     0   |    0   |     0   | exists,up |
+| 4  | dev-ceph-osd3.kingbay-tech.com | 1078M | 18.9G |    0   |     0   |    0   |     0   | exists,up |
+| 5  | dev-ceph-osd3.kingbay-tech.com | 1142M | 18.8G |    0   |     0   |    0   |     0   | exists,up |
++----+--------------------------------+-------+-------+--------+---------+--------+---------+-----------+
+
+
+[afu@dev-ceph-osd1 ~]$ ceph osd stat
+5 osds: 5 up, 5 in; epoch: e426
+
+
+[afu@dev-ceph-osd2 ~]$ sudo ceph-volume lvm list
+====== osd.3 =======
+
+  [block]    /dev/ceph-67430e84-0df0-4548-834a-3cb703394694/osd-block-86e4258f-0251-4e04-ac6b-0231350c91bf
+
+      type                      block
+      osd id                    3
+      cluster fsid              4333408c-d6d4-4bd5-a856-d3a295e7e793
+      cluster name              ceph
+      osd fsid                  86e4258f-0251-4e04-ac6b-0231350c91bf
+      encrypted                 0
+      cephx lockbox secret
+      block uuid                yt9thV-U60a-7bne-cnK3-gy9x-pqoF-oxgV3s
+      block device              /dev/ceph-67430e84-0df0-4548-834a-3cb703394694/osd-block-86e4258f-0251-4e04-ac6b-0231350c91bf
+      vdo                       0
+      crush device class        None
+      devices                   /dev/sdc
 ```
 
 [http://docs.ceph.com/docs/mimic/rados/configuration/mon-osd-interaction](http://docs.ceph.com/docs/mimic/rados/configuration/mon-osd-interaction)
