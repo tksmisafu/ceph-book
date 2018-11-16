@@ -229,3 +229,8 @@ tcp    ESTAB      0      0      10.1.13.211:41934              10.1.13.232:6789
 
 ```
 
+{% hint style="info" %}
+心得：  
+Monitor & MDS 角色皆有 3 node 維持運作，有不錯的 HA基礎，如果再透過 virtual ip & keepalived 此機制，對 HA 機制更友善。
+{% endhint %}
+

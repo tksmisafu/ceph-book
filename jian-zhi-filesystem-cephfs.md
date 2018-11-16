@@ -158,6 +158,13 @@ sudo systemctl enable ceph-fuse@/mnt.service
 [http://docs.ceph.com/docs/master/man/8/ceph-fuse/](http://docs.ceph.com/docs/master/man/8/ceph-fuse/)
 {% endhint %}
 
+## 開機啟動 mount 
+
+```bash
+[afu@mattermost-211 ~]$ sudo vi /etc/fstab
+10.1.13.232:6789:/    /mnt/cephfs    ceph    name=admin,secretfile=/etc/ceph/admin.secret,noatime,_netdev    0 2
+```
+
 ## 移除 FS
 
 ```bash
