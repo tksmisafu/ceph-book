@@ -165,6 +165,11 @@ sudo systemctl enable ceph-fuse@/mnt.service
 10.1.13.232:6789:/    /mnt/cephfs    ceph    name=admin,secretfile=/etc/ceph/admin.secret,noatime,_netdev    0 2
 ```
 
+{% hint style="info" %}
+參考連結：  
+[http://docs.ceph.com/docs/mimic/cephfs/fstab/](http://docs.ceph.com/docs/mimic/cephfs/fstab/)
+{% endhint %}
+
 ## 移除 FS
 
 ```bash
