@@ -7,10 +7,15 @@
 
 ![](.gitbook/assets/ceph-metadata-server-mds.png)
 
+![](.gitbook/assets/image%20%283%29.png)
+
 {% hint style="info" %}
 文章參考：  
-[http://docs.ceph.com/docs/giant/architecture/](http://docs.ceph.com/docs/giant/architecture/)
+[http://docs.ceph.com/docs/giant/architecture/](http://docs.ceph.com/docs/giant/architecture/)  
+[https://access.redhat.com/documentation/en-us/red\_hat\_ceph\_storage/3/html-single/ceph\_file\_system\_guide/index](https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html-single/ceph_file_system_guide/index)
 {% endhint %}
+
+
 
 
 

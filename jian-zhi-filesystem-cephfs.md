@@ -86,7 +86,8 @@ MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimi
 ```
 
 {% hint style="warning" %}
-問題：如何決定此 cephfs 空間大小？
+問題：如何決定此 cephfs 空間大小？  
+[http://docs.ceph.com/docs/mimic/cephfs/quota/](http://docs.ceph.com/docs/mimic/cephfs/quota/)
 {% endhint %}
 
 {% hint style="info" %}
