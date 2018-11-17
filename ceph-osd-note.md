@@ -204,6 +204,29 @@ ID CLASS WEIGHT  TYPE NAME              STATUS REWEIGHT PRI-AFF
       vdo                       0
       crush device class        None
       devices                   /dev/sdc
+
+[afu@host-206 ~]$ sudo ceph osd perf
+osd commit_latency(ms) apply_latency(ms)
+  8                  0                 0
+  1                  0                 0
+ 15                  0                 0
+ 11                  0                 0
+ 10                  0                 0
+ 12                  0                 0
+ 16                  0                 0
+ 13                  0                 0
+ 19                 13                13
+ 18                  4                 4
+  3                  0                 0
+ 14                  0                 0
+  9                  0                 0
+  7                  0                 0
+  0                  0                 0
+  4                  0                 0
+  5                  0                 0
+  6                  0                 0
+ 17                  0                 0
+  2                  0                 0
 ```
 
 [http://docs.ceph.com/docs/mimic/rados/configuration/mon-osd-interaction](http://docs.ceph.com/docs/mimic/rados/configuration/mon-osd-interaction)
