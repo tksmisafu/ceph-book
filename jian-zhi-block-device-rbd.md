@@ -34,8 +34,9 @@ pool 'p_rbd' created
 [ceph-admin@ceph-mon-1 cluster]$
 
 # 512000 = 500GB
-[ceph-admin@ceph-mon-1 cluster]$ sudo rbd create --size 512000 p_rbd/gitlab_bk
-[ceph-admin@ceph-mon-1 cluster]$
+# rbd create 必須有 --image-feature layering
+[ceph-admin@ceph-mon-1 cluster]$ sudo rbd create --image-feature layering --size 512000 p_rbd/gitlab_bk
+
 ```
 
 ### 查看 RBD 資訊
