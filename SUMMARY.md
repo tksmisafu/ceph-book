@@ -21,5 +21,5 @@
 * [問題：mount fail](ceph-health.md)
 * [問題：mount not secret \(for auth\_x protocol\)](mount-not-secret-for-authx-protocol.md)
 * [問題：Mount 出現 hpet 錯誤訊息](mount-chu-hpet-xi.md)
-* [錯誤：rbd image uses unsupported features: 0x38](rbd-image-uses-unsupported-features-0x38.md)
+* [問題：rbd image uses unsupported features: 0x38](rbd-image-uses-unsupported-features-0x38.md)
 

@@ -56,6 +56,22 @@ rbd image 'gitlab_bk':
         op_features:
         flags:
         create_timestamp: Mon Nov 19 11:23:50 2018
+###################################################################################################
+### 網路解說範例
+###################################################################################################
+rbd image 'foo':
+    size 1024 MB in 256 objects
+    order 22 (4096 kB objects)
+    block_name_prefix: rbd_data.10612ae7234b
+    format: 2    features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+    flags:
+            layering: 支持分层
+            striping: 支持条带化 v2
+            exclusive-lock: 支持独占锁
+            object-map: 支持对象映射（依赖 exclusive-lock ）
+            fast-diff: 快速计算差异（依赖 object-map ）
+            deep-flatten: 支持快照扁平化操作
+            journaling: 支持记录 IO 操作（依赖独占锁）
 ```
 
 ### CREATE A BLOCK DEVICE USER
@@ -97,6 +113,50 @@ cd /mnt/ceph-block-device
 [242204.141703] libceph: mon0 192.168.13.231:6789 session established
 [242204.142084] libceph: client74148 fsid 4ab0a924-e5fd-4048-8cef-4d70697ba106
 [242204.149233] rbd: rbd0: capacity 536870912000 features 0x1
+
+# 第一台 Ceph-client
+[afu@client-211 ~]$ sudo mkfs.ext4 -m0 /dev/rbd/p_rbd/gitlab_bk
+mke2fs 1.42.9 (28-Dec-2013)
+Discarding device blocks: done
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=1024 blocks, Stripe width=1024 blocks
+32768000 inodes, 131072000 blocks
+0 blocks (0.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2279604224
+4000 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock clients stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+        4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968,
+        102400000
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[afu@client-211 ~]$ sudo mkdir /mnt/ceph-rbd
+[afu@client-211 ~]$ sudo mount /dev/rbd/p_rbd/gitlab_bk /mnt/ceph-rbd
+[afu@client-211 ~]$ sudo touch /mnt/ceph-rbd/abc
+[afu@client-211 ~]$
+
+# 第二台 Ceph-client
+[afu@client-206 ~]$ sudo rbd map p_rbd/gitlab_bk --name client.admin -m 192.168.13.231 -k /etc/ceph/ceph.client.admin.keyring
+/dev/rbd0
+[afu@client-206 ~]$ sudo mkdir /mnt/ceph-rbd
+[afu@client-206 ~]$ sudo mount /dev/rbd/p_rbd/gitlab_bk /mnt/ceph-rbd
+[afu@client-206 ~]$ ls -al /mnt/ceph-rbd
+total 20
+drwxr-xr-x  3 root root  4096 Nov 19 12:35 .
+drwxr-xr-x. 4 root root    36 Nov 19 12:44 ..
+-rw-r--r--  1 root root     0 Nov 19 12:35 abc
+drwx------  2 root root 16384 Nov 19 12:33 lost+found
+[afu@client-206 ~]$
 ```
 
 {% hint style="info" %}

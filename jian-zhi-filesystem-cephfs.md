@@ -28,9 +28,9 @@ one for data     and     one for metadata.
 $ ceph osd pool create cephfs_data <pg_num>
 $ ceph osd pool create cephfs_metadata <pg_num>
 
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool create gitlab_fs_data 128
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create gitlab_fs_data 128
 pool 'gitlab_fs_data' created
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool create gitlab_fs_metadata 128
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create gitlab_fs_metadata 128
 pool 'gitlab_fs_metadata' created
 ```
 
@@ -42,32 +42,32 @@ pool 'gitlab_fs_metadata' created
 
 $ ceph fs new <fs_name> <metadata> <data>
 # 範例
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs new gitlab_fs gitlab_fs_metadata gitlab_fs_data
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs new gitlab_fs gitlab_fs_metadata gitlab_fs_data
 new fs with metadata pool 11 and data pool 10
 $ ceph fs new cephfs cephfs_metadata cephfs_data
 $ ceph fs ls
 
 # 查看 MDS 狀態
 $ ceph mds stat
-gitlab_fs-1/1/1 up  {0=ceph-mon-231=up:active}   << 這是範例
+gitlab_fs-1/1/1 up  {0=ceph-mon-1=up:active}   << 這是範例
 ```
 
 ### 觀察 filesystem
 
 ```bash
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs ls
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs ls
 name: gitlab_fs, metadata pool: p_fs_metadata, data pools: [p_fs_data ]
 
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph mds stat
-gitlab_fs-1/1/1 up  {0=ceph-mon-233=up:active}, 2 up:standby
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph mds stat
+gitlab_fs-1/1/1 up  {0=ceph-mon-3=up:active}, 2 up:standby
 
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph fs status
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs status
 gitlab_fs - 0 clients
 =========
 +------+--------+--------------+---------------+-------+-------+
 | Rank | State  |     MDS      |    Activity   |  dns  |  inos |
 +------+--------+--------------+---------------+-------+-------+
-|  0   | active | ceph-mon-233 | Reqs:    0 /s |    0  |    0  |
+|  0   | active | ceph-mon-3 | Reqs:    0 /s |    0  |    0  |
 +------+--------+--------------+---------------+-------+-------+
 +---------------+----------+-------+-------+
 |      Pool     |   type   |  used | avail |
@@ -78,8 +78,8 @@ gitlab_fs - 0 clients
 +--------------+
 | Standby MDS  |
 +--------------+
-| ceph-mon-231 |
-| ceph-mon-232 |
+| ceph-mon-1 |
+| ceph-mon-2 |
 +--------------+
 MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
 
