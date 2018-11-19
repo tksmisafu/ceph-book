@@ -162,8 +162,8 @@ sudo systemctl enable ceph-fuse@/mnt.service
 ## 開機啟動 mount 
 
 ```bash
-[afu@mattermost-211 ~]$ sudo vi /etc/fstab
-10.1.13.232:6789:/    /mnt/cephfs    ceph    name=admin,secretfile=/etc/ceph/admin.secret,noatime,_netdev    0 2
+[afu@client-211 ~]$ sudo vi /etc/fstab
+192.168.13.232:6789:/    /mnt/cephfs    ceph    name=admin,secretfile=/etc/ceph/admin.secret,noatime,_netdev    0 2
 ```
 
 {% hint style="info" %}
