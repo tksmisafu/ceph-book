@@ -20,3 +20,24 @@
 # Host map rbd 可否 read-only mode
 ```
 
+兩台 Ceph-client 同時 map same rbd，同時 cp file 
+
+```bash
+[afu@client-211 ~]$ time sudo cp /tmp/26G.tar /mnt/ceph-rbd/26G-1.tar
+
+real    3m44.475s
+user    0m0.227s
+sys     0m40.796s
+# 網路 peak: 900Mb
+
+[afu@client-206 ~]$ time sudo cp /tmp/10G.tar /mnt/ceph-rbd/
+
+real    1m21.211s
+user    0m0.086s
+sys     0m15.643s
+# 網路 peak: 908Mb
+# 上述是同時進行複製，網路 peak 值也是同時，並且穩定。
+```
+
+
+
