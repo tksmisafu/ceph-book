@@ -18,9 +18,9 @@ PG 數量，是基於 OSD、pool replica 等因素計算出來
 
 從計算工具中，發現 pool 空間使用率概念，當使用率升高時，PG 數量也隨之要調整。
 
-![20% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image%20%281%29.png)
+![20% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image.png)
 
-![70% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image%20%282%29.png)
+![70% &#x8CC7;&#x6599;&#x91CF;&#x4F7F;&#x7528;&#x7387;](.gitbook/assets/image%20%281%29.png)
 
 那...意即～ 管理員須適時調整PG數量，維持 Ceph recovery 效率。
 
