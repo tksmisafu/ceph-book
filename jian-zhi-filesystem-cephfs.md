@@ -174,12 +174,9 @@ sudo systemctl enable ceph-fuse@/mnt.service
 ## 移除 FS
 
 ```bash
-[afu@ceph-mon-231 ~]$ 
-[afu@ceph-mon-231 ~]$ sudo systemctl stop ceph-mds\*
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo ceph mds fail 0
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo ceph fs status
+[afu@ceph-mon-1 ~]$ sudo systemctl stop ceph-mds\*
+[afu@ceph-mon-1 ~]$ sudo ceph mds fail 0
+[afu@ceph-mon-1 ~]$ sudo ceph fs status
 gitlab_fs - 0 clients
 =========
 +------+--------+-----+----------+-----+------+
@@ -201,9 +198,9 @@ gitlab_fs - 0 clients
 | version | daemons |
 +---------+---------+
 +---------+---------+
-[afu@ceph-mon-231 ~]$ sudo ceph fs rm gitlab_fs --yes-i-really-mean-it
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo ceph fs status
+[afu@ceph-mon-1 ~]$ sudo ceph fs rm gitlab_fs --yes-i-really-mean-it
+[afu@ceph-mon-1 ~]$
+[afu@ceph-mon-1 ~]$ sudo ceph fs status
 +-------------+
 | Standby MDS |
 +-------------+
@@ -213,20 +210,17 @@ gitlab_fs - 0 clients
 +---------+---------+
 +---------+---------+
 
-[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_metadata --yes-i-really-really-mean-it
+[afu@ceph-mon-1 ~]$ sudo ceph osd pool delete p_fs_metadata --yes-i-really-really-mean-it
 Error EPERM: WARNING: this will *PERMANENTLY DESTROY* all data stored in pool p_fs_metadata.  
 If you are *ABSOLUTELY CERTAIN* that is what you want, pass the pool name *twice*, followed by --yes-i-really-really-mean-it.
 
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_metadata p_fs_metadata --yes-i-really-really-mean-it
+[afu@ceph-mon-1 ~]$ sudo ceph osd pool delete p_fs_metadata p_fs_metadata --yes-i-really-really-mean-it
 pool 'p_fs_metadata' removed
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo ceph osd pool delete p_fs_data p_fs_data --yes-i-really-really-mean-it
+[afu@ceph-mon-1 ~]$
+[afu@ceph-mon-1 ~]$ sudo ceph osd pool delete p_fs_data p_fs_data --yes-i-really-really-mean-it
 pool 'p_fs_data' removed
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$
-[afu@ceph-mon-231 ~]$ sudo rm -rf /var/lib/ceph/mds/ceph-ceph-mon-231/
-[afu@ceph-mon-231 ~]$
+[afu@ceph-mon-1 ~]$
+[afu@ceph-mon-1 ~]$ sudo rm -rf /var/lib/ceph/mds/ceph-ceph-mon-1/
+[afu@ceph-mon-1 ~]$
 ```
 
