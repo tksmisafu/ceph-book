@@ -70,7 +70,7 @@ rbd image 'gitlab_bk':
 
 ```bash
 # On the ceph-client node, create a block device image.
-rbd create [image-name] --size 4096 --image-feature layering [-m {mon-IP}] [-k /path/to/ceph.client.admin.keyring]
+# rbd create [image-name] --size 4096 --image-feature layering [-m {mon-IP}] [-k /path/to/ceph.client.admin.keyring]
 
 # On the ceph-client node, map the image to a block device.
 sudo rbd map [image-name] --name client.admin [-m {mon-IP}] [-k /path/to/ceph.client.admin.keyring]
@@ -85,6 +85,17 @@ sudo mount /dev/rbd/rbd/foo /mnt/ceph-block-device
 cd /mnt/ceph-block-device
 
 #
+```
+
+```bash
+# 範例
+[afu@client-211 ~]$ sudo rbd map p_rbd/gitlab_bk --name client.admin -m 192.168.13.231 -k /etc/ceph/ceph.client.admin.keyring
+/dev/rbd0
+
+[afu@client-211 ~]$ dmesg | tail
+[242204.141703] libceph: mon0 192.168.13.231:6789 session established
+[242204.142084] libceph: client74148 fsid 4ab0a924-e5fd-4048-8cef-4d70697ba106
+[242204.149233] rbd: rbd0: capacity 536870912000 features 0x1
 ```
 
 {% hint style="info" %}
