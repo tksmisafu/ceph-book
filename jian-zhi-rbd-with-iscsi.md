@@ -67,6 +67,23 @@ sudo mkdir /etc/target
 sudo mkdir /var/target
 ```
 
+#### CEPH-ISCSI
+
+```bash
+git clone https://github.com/ceph/ceph-iscsi.git
+cd ceph-iscsi
+sudo python setup.py install --install-scripts=/usr/bin
+sudo cp usr/lib/systemd/system/rbd-target-gw.service /lib/systemd/system
+sudo cp usr/lib/systemd/system/rbd-target-api.service /lib/systemd/system
+
+sudo systemctl daemon-reload
+sudo systemctl enable rbd-target-gw
+sudo systemctl start rbd-target-gw
+sudo systemctl enable rbd-target-api
+sudo systemctl start rbd-target-api
+
+```
+
 {% hint style="info" %}
 iSCSI GW 服務安裝：  
 [http://docs.ceph.com/docs/master/rbd/iscsi-target-cli-manual-install/](http://docs.ceph.com/docs/master/rbd/iscsi-target-cli-manual-install/)
