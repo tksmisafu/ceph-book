@@ -21,7 +21,7 @@ ssh node1 sudo ceph -s
 
 搭建後架構如下
 
-![](.gitbook/assets/image%20%285%29.png)
+![](.gitbook/assets/image%20%286%29.png)
 
 {% hint style="info" %}
 參考連結：  

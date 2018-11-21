@@ -1,4 +1,4 @@
-# 壓測
+# 壓測 CephFS vs Ceph RBD
 
 在 Ceph-client host\(vm\) 端，準備好 20GB size file，同時 mount cephfs、ceph rbd 兩個服務
 
@@ -16,7 +16,7 @@ sys     0m32.702s
 # 網路 iftop peak: 900Mb
 ```
 
-![](.gitbook/assets/image%20%286%29.png)
+![](.gitbook/assets/image%20%287%29.png)
 
 ### CP file to Ceph RBD
 

@@ -164,6 +164,23 @@ drwx------  2 root root 16384 Nov 19 12:33 lost+found
 [http://docs.ceph.com/docs/mimic/start/quick-rbd/](http://docs.ceph.com/docs/mimic/start/quick-rbd/)
 {% endhint %}
 
+### unmap an image
+
+```text
+rbd device unmap /dev/rbd0
+```
+
+```bash
+# 範例
+[afu@client-206 ~]$ sudo rbd device list
+id pool  image     snap device
+0  p_rbd gitlab_bk -    /dev/rbd0
+
+[afu@client-206 ~]$ sudo rbd unmap /dev/rbd0
+
+[afu@client-206 ~]$ sudo rbd device list
+```
+
 ### automatically mapped and mounted at boot 
 
 {% hint style="info" %}
