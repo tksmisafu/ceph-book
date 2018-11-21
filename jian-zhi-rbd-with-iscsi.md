@@ -12,7 +12,7 @@
 ## Requirements
 
 ```bash
-sudo yum install libnl3 kmod librbd1 pyparsing cmake glib2-devel kmod-devel libnl3-devel librados-devel librbd-devel
+sudo yum install cmake git libnl3 kmod librbd1 pyparsing cmake glib2-devel kmod-devel libnl3-devel librados-devel librados2-devel librbd-devel librbd1-devel
 sudo yum install python-kmod python-pyudev python-gobject python-urwid python-rados python-rbd python-netaddr python-netifaces python-crypto python-requests python-flask pyOpenSSL
 ```
 
