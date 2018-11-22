@@ -16,6 +16,19 @@ sudo yum install cmake git cmake libxslt-devel python-devel libnl3 kmod librbd1 
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python get-pip.py
 
 vi requirments.txt
+# 內容
+    pyparsing
+    kmod
+    pyudev
+    urwid
+    netifaces
+    crypto
+    pycrypto
+    requests
+    flask
+    pyOpenSSL
+    netaddr
+
 sudo pip install -r requirments.txt
 
 # sudo yum install python-kmod python-pyudev python-gobject python-urwid python-rados python-rbd python-netaddr python-netifaces python-crypto python-requests python-flask pyOpenSSL
