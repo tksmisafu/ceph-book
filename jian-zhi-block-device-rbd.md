@@ -83,7 +83,7 @@ rbd image 'foo':
         key = AQAFM/Jb57X0JRAAKfNJOAsRXkqMByhHXSPW8w==
 ```
 
-### Ceph-Client Host ~ CONFIGURE A BLOCK DEVICE
+### Ceph-Client Host ~ CONFIGURE A BLOCK DEVICE \(map\)
 
 ```bash
 # On the ceph-client node, create a block device image.

@@ -47,6 +47,9 @@ systemctl start tcmu-runner
 git clone https://github.com/open-iscsi/rtslib-fb.git
 cd rtslib-fb
 sudo python setup.py install
+
+# python module pyudev==0.15 > pyudev==0.21.0
+# python module add rtslib-fb==2.1.69
 ```
 
 #### CONFIGSHELL-FB
@@ -55,6 +58,8 @@ sudo python setup.py install
 git clone https://github.com/open-iscsi/configshell-fb.git
 cd configshell-fb
 sudo python setup.py install
+
+# python module add configshell-fb==1.1.25
 ```
 
 #### TARGETCLI-FB
@@ -65,6 +70,8 @@ cd targetcli-fb
 sudo python setup.py install
 sudo mkdir /etc/target
 sudo mkdir /var/target
+
+# python module add targetcli-fb===2.1.fb49
 ```
 
 #### CEPH-ISCSI
@@ -76,12 +83,13 @@ sudo python setup.py install --install-scripts=/usr/bin
 sudo cp usr/lib/systemd/system/rbd-target-gw.service /lib/systemd/system
 sudo cp usr/lib/systemd/system/rbd-target-api.service /lib/systemd/system
 
+# python module add  ceph-iscsi==3.0
+
 sudo systemctl daemon-reload
 sudo systemctl enable rbd-target-gw
 sudo systemctl start rbd-target-gw
 sudo systemctl enable rbd-target-api
 sudo systemctl start rbd-target-api
-
 ```
 
 {% hint style="info" %}
