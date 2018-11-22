@@ -12,8 +12,8 @@
 ## Requirements
 
 ```bash
-sudo yum install cmake git cmake libnl3 kmod librbd1 glib2-devel libnl3-devel kmod-devel librbd1-devel librados2-devel
-sudo yum install python-kmod python-pyudev python-gobject python-urwid python-rados python-rbd python-netaddr python-netifaces python-crypto python-requests python-flask pyOpenSSL
+sudo yum install cmake git cmake libxslt-devel python-devel libnl3 kmod librbd1 glib2-devel libnl3-devel kmod-devel librbd1-devel librados2-devel
+# sudo yum install python-kmod python-pyudev python-gobject python-urwid python-rados python-rbd python-netaddr python-netifaces python-crypto python-requests python-flask pyOpenSSL
 ```
 
 #### TCMU-RUNNER
@@ -36,9 +36,9 @@ sudo vi /etc/tcmu/tcmu.conf
     log_dir_path = "/var/log"
 
 # Enable and start the daemon:
-systemctl daemon-reload
-systemctl enable tcmu-runner
-systemctl start tcmu-runner
+sudo systemctl daemon-reload
+sudo systemctl enable tcmu-runner
+sudo systemctl start tcmu-runner
 ```
 
 #### RTSLIB-FB
