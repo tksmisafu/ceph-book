@@ -13,6 +13,11 @@
 
 ```bash
 sudo yum install cmake git cmake libxslt-devel python-devel libnl3 kmod librbd1 glib2-devel libnl3-devel kmod-devel librbd1-devel librados2-devel
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python get-pip.py
+
+vi requirments.txt
+sudo pip install -r requirments.txt
+
 # sudo yum install python-kmod python-pyudev python-gobject python-urwid python-rados python-rbd python-netaddr python-netifaces python-crypto python-requests python-flask pyOpenSSL
 ```
 
