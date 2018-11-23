@@ -130,6 +130,70 @@ iSCSI GW 服務安裝：
 
 ## Configuring the iSCSI Target
 
+```bash
+[afu@dev-ceph-osd1 ~]$ sudo gwcli
+Warning: Could not load preferences file /root/.gwcli/prefs.bin.
+/> cd /iscsi-target
+/iscsi-target> create iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw
+ok
+```
+
+Create the iSCSI gateways（必須兩台GW）
+
+```bash
+/iscsi-target> cd iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw/gateways
+/iscsi-target...-igw/gateways>
+/iscsi-target...-igw/gateways> create dev-ceph-osd1 192.168.100.171 skipchecks=true
+OS version/package checks have been bypassed
+Adding gateway, syncing 0 disk(s) and 0 client(s)
+ok
+
+#增加另一台
+/iscsi-target...-igw/gateways> create dev-ceph-osd2 192.168.100.172 skipchecks=true
+OS version/package checks have been bypassed
+Adding gateway, syncing 0 disk(s) and 0 client(s)
+ok
+```
+
+Add RBD image
+
+```bash
+/iscsi-target...-igw/gateways>
+/iscsi-target...-igw/gateways> cd /disks
+
+/disks> create pool=rbd image=disk_3 size=3G
+ok
+```
+
+Create a client with the initiator name
+
+```text
+/disks> cd /iscsi-target/iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw/hosts
+/iscsi-target...csi-igw/hosts>
+/iscsi-target...csi-igw/hosts> create iqn.2018-11.com.redhat:rh7-client
+ok
+```
+
+Set the client’s CHAP username to myiscsiusername and password to myiscsipassword
+
+```text
+/iscsi-target...at:rh7-client> auth chap=deviscsiusername/deviscsipassword
+ok
+```
+
+Add the disk to the client
+
+```bash
+/iscsi-target...at:rh7-client> disk add rbd.disk_3
+ok
+```
+
+如果要移除上述設定，方式
+
+```bash
+/iscsi-target> clearconfig confirm=true
+```
+
 ## Configuring the iSCSI Initiators
 
 ## Monitoring the iSCSI Gateways
