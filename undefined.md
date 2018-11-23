@@ -16,7 +16,7 @@ sys     0m32.702s
 # 網路 iftop peak: 900Mb
 ```
 
-![](.gitbook/assets/image%20%287%29.png)
+![](.gitbook/assets/image%20%288%29.png)
 
 ### CP file to Ceph RBD
 
@@ -30,7 +30,7 @@ sys     0m43.456s
 # 網路 iftop peak: 901Mb
 ```
 
-![](.gitbook/assets/image%20%284%29.png)
+![](.gitbook/assets/image%20%285%29.png)
 
 ## 單一目錄零碎資料
 
@@ -54,7 +54,7 @@ user    0m1.224s
 sys     0m15.183s
 ```
 
-![](.gitbook/assets/image%20%283%29.png)
+![](.gitbook/assets/image%20%284%29.png)
 
 ### CP file to Ceph RBD
 
