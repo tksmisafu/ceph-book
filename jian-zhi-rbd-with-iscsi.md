@@ -11,8 +11,21 @@
 
 ## Requirements
 
+#### RBD pool create
+
 ```bash
-sudo yum install cmake git cmake libxslt-devel python-devel libnl3 kmod librbd1 glib2-devel libnl3-devel kmod-devel librbd1-devel librados2-devel
+[ceph-admin@ceph-mon afu]$ ceph osd pool create rbd 8
+pool 'rbd' created
+
+[ceph-admin@ceph-mon afu]$ rbd pool init rbd
+[ceph-admin@ceph-mon afu]$ rbd create --image-feature layering --size 5120 rbd/rbd_image
+[ceph-admin@ceph-mon afu]$ rbd ls
+```
+
+#### SYSTEM Common packages
+
+```bash
+sudo yum install gcc cmake git cmake libxslt-devel python-devel libnl3 kmod librbd1 glib2-devel libnl3-devel kmod-devel librbd1-devel librados2-devel python-kmod
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python get-pip.py
 
 vi requirments.txt
