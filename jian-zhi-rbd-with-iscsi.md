@@ -51,6 +51,8 @@ sudo pip install -r requirments.txt
 
 ```text
 open TCP ports 3260 and 5000 on the firewall.
+firewall-cmd --permanent --add-port=3260/tcp
+firewall-cmd --reload
 ```
 
 #### TCMU-RUNNER
@@ -175,7 +177,7 @@ trusted_ip_list = 192.168.100.171,192.168.100.172
 sudo systemctl restart rbd-target-api
 ```
 
-Go to iscsi-targets and create a target
+### Go to iscsi-targets and create a target
 
 ```bash
 [afu@dev-ceph-osd1 ~]$ sudo gwcli
@@ -185,7 +187,7 @@ Warning: Could not load preferences file /root/.gwcli/prefs.bin.
 ok
 ```
 
-Create the iSCSI gateways（必須兩台GW）
+#### Create the iSCSI gateways（必須兩台GW）
 
 ```bash
 /iscsi-target> cd iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw/gateways
@@ -202,7 +204,7 @@ Adding gateway, syncing 0 disk(s) and 0 client(s)
 ok
 ```
 
-Add RBD image
+#### Add RBD image
 
 ```bash
 /iscsi-target...-igw/gateways>
@@ -212,7 +214,7 @@ Add RBD image
 ok
 ```
 
-Create a client with the initiator name
+#### Create a client with the initiator name
 
 ```text
 /disks> cd /iscsi-target/iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw/hosts
@@ -221,14 +223,14 @@ Create a client with the initiator name
 ok
 ```
 
-Set the client’s CHAP username to myiscsiusername and password to myiscsipassword
+#### Set the client’s CHAP username to myiscsiusername and password to myiscsipassword
 
 ```text
 /iscsi-target...at:rh7-client> auth chap=myiscsiusername/myiscsipassword
 ok
 ```
 
-Add the disk to the client
+#### Add the disk to the client
 
 ```bash
 /iscsi-target...at:rh7-client> disk add rbd.disk_3
@@ -258,6 +260,13 @@ o- iqn.2018-01.com.redhat:rh7-client ...........................................
 
 ```bash
 /iscsi-target> clearconfig confirm=true
+
+# 其他筆記
+iscsiadm --mode node --op delete
+initiator端登出
+$ iscsiadm -m node -T iqn.2018-10.com.netease:cephtgt.target0 --logout # 先确保卷未使用
+$ iscsiadm -m node -T iqn.2018-10.com.netease:cephtgt.target0 -o delete
+$ iscsiadm -m node  # 查看所有保存的target记录（可能未login）
 ```
 
 ## Configuring the iSCSI Initiators
@@ -362,7 +371,7 @@ I/O size (minimum/optimal): 512 bytes / 524288 bytes
 
 ## Monitoring the iSCSI Gateways
 
-Install /  running in Ceph iSCSI gateway
+### Install /  running in Ceph iSCSI gateway
 
 ```bash
 git clone https://github.com/ceph/ceph-iscsi-tools.git
@@ -377,7 +386,7 @@ cd /var/lib/pcp/pmdas/lio
 sudo ./Install
 ```
 
-GWTOP
+### GWTOP
 
 ```bash
 [afu@dev-ceph-osd1 ~]$ gwtop
@@ -397,13 +406,26 @@ rbd.disk_3             3G        0      0.00      0.00   iscsi-client(CON)
 觀察
 
 ```bash
-[root@dev-jmeter01 afu]# lsscsi
+[root@iscsi-client afu]# lsscsi
 [0:0:0:0]    disk    VMware   Virtual disk     2.0   /dev/sda
 [3:0:0:0]    cd/dvd  NECVMWar VMware SATA CD00 1.00  /dev/sr0
 [33:0:0:0]   disk    LIO-ORG  TCMU device      0002  /dev/sdb
 [34:0:0:0]   disk    LIO-ORG  TCMU device      0002  /dev/sdc
 
-[root@dev-jmeter01 afu]# ls -l /dev/disk/by-*
+[root@iscsi-client afu]# lsblk
+NAME                     MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sda                        8:0    0   60G  0 disk
+├─sda1                     8:1    0    1G  0 part  /boot
+└─sda2                     8:2    0   59G  0 part
+  ├─centos_c7--1804-root 253:0    0   57G  0 lvm   /
+  └─centos_c7--1804-swap 253:1    0    2G  0 lvm   [SWAP]
+sdb                        8:16   0    3G  0 disk
+└─mpatha                 253:2    0    3G  0 mpath
+sdc                        8:32   0    3G  0 disk
+└─mpatha                 253:2    0    3G  0 mpath
+sr0                       11:0    1 1024M  0 rom
+
+[root@iscsi-client afu]# ls -l /dev/disk/by-*
 /dev/disk/by-path:
 total 0
 lrwxrwxrwx 1 root root  9 Nov 23 22:59 ip-192.168.100.171:3260-iscsi-iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw-lun-0 -> ../../sdb

@@ -67,7 +67,7 @@ gitlab_fs - 0 clients
 +------+--------+--------------+---------------+-------+-------+
 | Rank | State  |     MDS      |    Activity   |  dns  |  inos |
 +------+--------+--------------+---------------+-------+-------+
-|  0   | active | ceph-mon-3 | Reqs:    0 /s |    0  |    0  |
+|  0   | active | ceph-mon-3   | Reqs:    0 /s |    0  |    0  |
 +------+--------+--------------+---------------+-------+-------+
 +---------------+----------+-------+-------+
 |      Pool     |   type   |  used | avail |
@@ -78,8 +78,8 @@ gitlab_fs - 0 clients
 +--------------+
 | Standby MDS  |
 +--------------+
-| ceph-mon-1 |
-| ceph-mon-2 |
+| ceph-mon-1   |
+| ceph-mon-2   |
 +--------------+
 MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
 
