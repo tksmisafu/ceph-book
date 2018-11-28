@@ -16,7 +16,7 @@ ceph-deploy mds create node1
 [http://docs.ceph.com/docs/mimic/rados/deployment/ceph-deploy-mds/](http://docs.ceph.com/docs/mimic/rados/deployment/ceph-deploy-mds/)
 {% endhint %}
 
-### CREATING POOLS
+### Create pool
 
 A Ceph filesystem requires at least two RADOS pools～  
 one for data     and     one for metadata.
@@ -28,9 +28,9 @@ one for data     and     one for metadata.
 $ ceph osd pool create cephfs_data <pg_num>
 $ ceph osd pool create cephfs_metadata <pg_num>
 
-[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create gitlab_fs_data 128
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create p_fs_data 128
 pool 'gitlab_fs_data' created
-[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create gitlab_fs_metadata 128
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph osd pool create p_fs_metadata 128
 pool 'gitlab_fs_metadata' created
 ```
 
@@ -42,7 +42,7 @@ pool 'gitlab_fs_metadata' created
 
 $ ceph fs new <fs_name> <metadata> <data>
 # 範例
-[ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs new gitlab_fs gitlab_fs_metadata gitlab_fs_data
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs new CephFS p_fs_metadata p_fs_data
 new fs with metadata pool 11 and data pool 10
 $ ceph fs new cephfs cephfs_metadata cephfs_data
 $ ceph fs ls
@@ -95,7 +95,81 @@ MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimi
 [http://docs.ceph.com/docs/master/cephfs/createfs/](http://docs.ceph.com/docs/master/cephfs/createfs/)
 {% endhint %}
 
-## MOUNT CEPHFS WITH THE KERNEL DRIVER
+## Set two active MDS
+
+```bash
+[ceph-admin@ceph-mon-1 afu]$ sudo ceph fs set CephFS max_mds 2
+[ceph-admin@ceph-mon-1 afu]$
+[ceph-admin@ceph-mon-1 afu]$
+[ceph-admin@ceph-mon-1 afu]$ sudo ceph fs status
+CephFS - 1 clients
+======
++------+--------+--------------+---------------+-------+-------+
+| Rank | State  |     MDS      |    Activity   |  dns  |  inos |
++------+--------+--------------+---------------+-------+-------+
+|  0   | active | ceph-mon-3   | Reqs:    0 /s |   10  |   13  |
+|  1   | active | ceph-mon-1   | Reqs:    0 /s |   10  |   13  |
++------+--------+--------------+---------------+-------+-------+
++---------------+----------+-------+-------+
+|      Pool     |   type   |  used | avail |
++---------------+----------+-------+-------+
+| p_fs_metadata | metadata | 4039  | 45.2T |
+|   p_fs_data   |   data   |    0  | 45.2T |
++---------------+----------+-------+-------+
++--------------+
+| Standby MDS  |
++--------------+
+| ceph-mon-2   |
++--------------+
+MDS version: ceph version 13.2.2 (02899bfda814146b021136e9d8e80eba494e1126) mimic (stable)
+```
+
+#### 切換 Active MDS
+
+```bash
+# 將原本的 Rank=1 的 ceph-mon-1 設定 fail 狀態（=Standby)
+# 原本 Standby 的 ceph-mon-2 會 rejoin 到 fs 服務中。
+# 促使 active MDS 是 ceph-mon-3、ceph-mon-2
+[ceph-admin@ceph-mon-1 afu]$ sudo ceph mds fail 1
+failed mds gid 50611
+
+[ceph-admin@ceph-mon-1 afu]$ sudo ceph fs status
+CephFS - 1 clients
+======
++------+--------+--------------+---------------+-------+-------+
+| Rank | State  |     MDS      |    Activity   |  dns  |  inos |
++------+--------+--------------+---------------+-------+-------+
+|  0   | active | ceph-mon-3   | Reqs:    0 /s |   10  |   13  |
+|  1   | active | ceph-mon-2   | Reqs:    0 /s |    0  |    3  |
++------+--------+--------------+---------------+-------+-------+
+```
+
+## 設定 Client-auth
+
+```text
+# 存取金鑰
+# 設定 filesystem_name=CephFS user=gitlab subdir=/Gitlab
+ceph fs authorize CephFS client.gitlab /gitlab rw
+[client.gitlab]
+        key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX==
+
+# 設定 filesystem_name=CephFS user=mysql subdir=/MySQL
+ceph fs authorize CephFS client.mysql /mysql rw
+[client.mysql]
+        key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX==
+
+# 範例：取得特定帳號下金鑰
+[ceph-admin@dev-ceph-mon afu]$ ceph auth get client.gitlab
+exported keyring for client.gitlab
+[client.gitlab]
+        key = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX==
+        caps mds = "allow rw path=/gitlab"
+        caps mon = "allow r"
+        caps osd = "allow rw tag cephfs data=CephFS"
+
+```
+
+## Mount CephFS with the kernel driver
 
 ### To mount the Ceph file system
 
@@ -126,7 +200,7 @@ sudo umount /mnt/mycephfs
 [http://docs.ceph.com/docs/master/cephfs/kernel/](http://docs.ceph.com/docs/master/cephfs/kernel/)
 {% endhint %}
 
-## MOUNT CEPHFS USING FUSE
+## Mount CehpFS useing fuse
 
 另有 ceph-fuse 工具指令，在 Ceph Client 端進行 mount file system～  
 透過此步驟，需要於 Ceph Client 端完成複製兩個檔案，權限`chmod 644`  
