@@ -198,3 +198,21 @@ id pool  image     snap device
 [http://docs.ceph.com/docs/mimic/rbd/rbd-config-ref/](http://docs.ceph.com/docs/mimic/rbd/rbd-config-ref/)
 {% endhint %}
 
+### 查看 image 使用空間
+
+```bash
+[ceph-admin@ceph-mon afu]$ rbd disk-usage rbd/rbd_image1
+warning: fast-diff map is not enabled for rbd_image1. operation may be slow.
+NAME       PROVISIONED USED
+rbd_image1     500 GiB  0 B
+```
+
+### 移除 image
+
+```bash
+[ceph-admin@ceph-mon afu]$ rbd remove p_rbd/gitlab_bk
+Removing image: 100% complete...done.
+```
+
+
+

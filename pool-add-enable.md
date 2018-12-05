@@ -43,7 +43,7 @@ total_space      109 GiB
 ### Show pool detail
 
 ```bash
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool ls detail
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool ls detail
 pool 8 'p_fs_data' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 512 pgp_num 512 last_change 151 lfor 0/144 flags hashpspool stripe_width 0 application cephfs
 pool 9 'p_fs_metadata' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 512 pgp_num 512 last_change 148 lfor 0/146 flags hashpspool stripe_width 0 application cephfs
 ```
@@ -60,21 +60,24 @@ ceph osd pool set-quota data max_objects 10000
 ### Set pool pg\_num  pgp\_num
 
 ```bash
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_data pg_num 512
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool set p_fs_data pg_num 512
 set pool 8 pg_num to 512
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_data pgp_num 512
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool set p_fs_data pgp_num 512
 set pool 8 pgp_num to 512
 
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_metadata pg_num 512
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool set p_fs_metadata pg_num 512
 set pool 9 pg_num to 512
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool set p_fs_metadata pgp_num 512
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool set p_fs_metadata pgp_num 512
 set pool 9 pgp_num to 512
 
 ```
 
 ### DELETE A POOL
 
-
+```bash
+[ceph-admin@ceph-mon afu]$ ceph osd pool delete p_rbd p_rbd --yes-i-really-really-mean-it
+pool 'p_rbd' removed
+```
 
 ### RENAME A POOL
 
@@ -102,7 +105,7 @@ size: 3
 min_size: 2
 
 # get {pool-name} all
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph osd pool get p_fs_data all
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph osd pool get p_fs_data all
 size: 3
 min_size: 2
 pg_num: 128
@@ -130,15 +133,15 @@ size: 3
 sudo ceph osd pool get afu-pool pg_num
 pg_num: 1024
 
-[ceph-admin@ceph-mon-231 prod-cluster]$ sudo ceph status
+[ceph-admin@ceph-mon prod-cluster]$ sudo ceph status
   cluster:
     id:     4ab0a924-e5fd-4048-8cef-4d70697ba106
     health: HEALTH_WARN
             Reduced data availability: 1024 pgs inactive
 
   services:
-    mon: 3 daemons, quorum ceph-mon-231,ceph-mon-232,ceph-mon-233
-    mgr: ceph-mon-231(active), standbys: ceph-mon-232, ceph-mon-233
+    mon: 3 daemons, quorum ceph-mon-1,ceph-mon-2,ceph-mon-3
+    mgr: ceph-mon-1(active), standbys: ceph-mon-2, ceph-mon-3
     osd: 20 osds: 20 up, 20 in
 
   data:
