@@ -61,3 +61,10 @@ sent: 1; skipped: 0; total: 1
 
 ```
 
+{% hint style="info" %}
+參考連結：  
+[http://docs.ceph.com/docs/master/mgr/zabbix/](http://docs.ceph.com/docs/master/mgr/zabbix/)
+{% endhint %}
+
+
+
