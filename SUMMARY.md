@@ -18,6 +18,7 @@
 * [建置 Object storage RADOS Gateway​](jian-zhi-object-storage-rados-gateway.md)
 * [模擬 CephFS HA](mo-cephfs-ha.md)
 * [壓測 CephFS vs Ceph RBD](undefined.md)
+* [監控 Ceph](monitor-ceph.md)
 * [Ceph client 整合測試 Block Devices](ceph-client-zheng-he-block-devices.md)
 * [note: ceph-deploy osd create](note-ceph-deploy-osd-create.md)
 * [問題：mount fail](ceph-health.md)

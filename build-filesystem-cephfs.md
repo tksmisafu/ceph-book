@@ -44,22 +44,21 @@ $ ceph fs new <fs_name> <metadata> <data>
 # 範例
 [ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs new CephFS p_fs_metadata p_fs_data
 new fs with metadata pool 11 and data pool 10
-$ ceph fs new cephfs cephfs_metadata cephfs_data
-$ ceph fs ls
 
-# 查看 MDS 狀態
+
 $ ceph mds stat
-gitlab_fs-1/1/1 up  {0=ceph-mon-1=up:active}   << 這是範例
+gitlab_fs-1/1/1 up  {0=ceph-mon-1=up:active}
 ```
 
 ### 觀察 filesystem
 
 ```bash
+# 查看 MDS 狀態
+[ceph-admin@ceph-mon-1 cluster]$ sudo ceph mds stat
+gitlab_fs-1/1/1 up  {0=ceph-mon-3=up:active}, 2 up:standby     << 這是範例
+
 [ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs ls
 name: gitlab_fs, metadata pool: p_fs_metadata, data pools: [p_fs_data ]
-
-[ceph-admin@ceph-mon-1 cluster]$ sudo ceph mds stat
-gitlab_fs-1/1/1 up  {0=ceph-mon-3=up:active}, 2 up:standby
 
 [ceph-admin@ceph-mon-1 cluster]$ sudo ceph fs status
 gitlab_fs - 0 clients
@@ -176,7 +175,7 @@ exported keyring for client.gitlab
 ```bash
 sudo mkdir /mnt/mycephfs
 sudo yum install nfs-utils
-sudo mount -t ceph 192.168.0.1:6789:/ /mnt/mycephfs
+sudo mount -t ceph 192.168.100.170:6789:/ /mnt/mycephfs
 sudo mount -t ceph 192.168.100.170:6789:/ /mnt/mycephfs -o name=admin,secret=AQBXTdBbwQTHMBAAAmjSrBbh+ilLeXT1tpAyoA==
 
 # 觀察
@@ -211,6 +210,9 @@ sudo umount /mnt/mycephfs
 ### To mount the Ceph file system as a FUSE
 
 ```bash
+# 確認已經安裝 ceph-fuse 套件
+sudo yum install -y ceph-fuse
+
 # 範例
 sudo mkdir /home/username/cephfs
 sudo ceph-fuse -m 192.168.0.1:6789 /home/username/cephfs
