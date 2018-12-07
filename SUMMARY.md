@@ -16,6 +16,7 @@
 * [建置 Block Device RBD​](jian-zhi-block-device-rbd.md)
 * [建置 RBD with iSCSI](build-rbd-with-iscsi.md)
 * [建置 Object storage RADOS Gateway​](jian-zhi-object-storage-rados-gateway.md)
+* [CentOS 6 掛載 CephFS](centos-6-mount-cephfs.md)
 * [模擬 CephFS HA](mo-cephfs-ha.md)
 * [壓測 CephFS vs Ceph RBD](undefined.md)
 * [監控 Ceph](monitor-ceph.md)
@@ -26,4 +27,5 @@
 * [問題：Mount 出現 hpet 錯誤訊息](mount-chu-hpet-xi.md)
 * [問題：rbd image uses unsupported features: 0x38](rbd-image-uses-unsupported-features-0x38.md)
 * [問題：ceph client umount &gt; re mount](ceph-client-umount-re-mount.md)
+* [問題：missing 400000000000000](missing-400000000000000.md)
 
