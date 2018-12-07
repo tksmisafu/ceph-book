@@ -11,16 +11,24 @@
 
 ## Requirements
 
-#### RBD pool create
+### Ceph Mon 端作業
 
 ```bash
+# RBD pool create
 [ceph-admin@ceph-mon afu]$ ceph osd pool create rbd 8
 pool 'rbd' created
 
 [ceph-admin@ceph-mon afu]$ rbd pool init rbd
 [ceph-admin@ceph-mon afu]$ rbd create --image-feature layering --size 5120 rbd/rbd_image
 [ceph-admin@ceph-mon afu]$ rbd ls
+[ceph-admin@ceph-mon afu]$ rbd info rbd_image
+# ceph-deploy install host_iscsi-gw
+[ceph-admin@ceph-mon afu]$ sudo ceph-deploy install user@iscsi-gw-ip
+[ceph-admin@ceph-mon afu]$ sudo ceph-deploy admin user@iscsi-gw-ip
+
 ```
+
+### Ceph ISCSI GW 端作業
 
 #### SYSTEM Common packages
 
@@ -49,10 +57,11 @@ sudo pip install -r requirments.txt
 
 #### Firewall
 
-```text
-open TCP ports 3260 and 5000 on the firewall.
-firewall-cmd --permanent --add-port=3260/tcp
-firewall-cmd --reload
+```bash
+# open TCP ports 3260 and 5000 on the firewall.
+sudo firewall-cmd --permanent --add-port=3260/tcp
+sudo firewall-cmd --permanent --add-port=5000/tcp
+sudo firewall-cmd --reload
 ```
 
 #### TCMU-RUNNER
@@ -128,7 +137,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable rbd-target-gw
 sudo systemctl start rbd-target-gw
 sudo systemctl enable rbd-target-api
-sudo systemctl start rbd-target-api
+# sudo systemctl start rbd-target-api (待下面步驟再啟動)
 ```
 
 {% hint style="info" %}
@@ -237,7 +246,7 @@ ok
 ok
 ```
 
-#### 嘗試新增第二台 
+#### 嘗試新增第二台（反覆前三個動作）
 
 ```bash
 /> cd iscsi-target/iqn.2018-11.com.redhat.iscsi-gw:iscsi-igw/hosts/

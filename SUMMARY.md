@@ -14,7 +14,7 @@
 * [Ceph Metadata Server \(MDS\) Architecture](mds-architecture.md)
 * [建置 Filesystem CephFS](build-filesystem-cephfs.md)
 * [建置 Block Device RBD​](jian-zhi-block-device-rbd.md)
-* [建置 RBD with iSCSI](jian-zhi-rbd-with-iscsi.md)
+* [建置 RBD with iSCSI](build-rbd-with-iscsi.md)
 * [建置 Object storage RADOS Gateway​](jian-zhi-object-storage-rados-gateway.md)
 * [模擬 CephFS HA](mo-cephfs-ha.md)
 * [壓測 CephFS vs Ceph RBD](undefined.md)
