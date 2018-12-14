@@ -77,11 +77,15 @@ sent: 1; skipped: 0; total: 1
 ceph config set mgr mgr/prometheus/server_addr 192.168.100.170
 ceph config set mgr mgr/prometheus/server_port 9283
 
+# 設定防火牆
+sudo firewall-cmd --zone=public --add-port=9283/tcp --permanent && sudo firewall-cmd --reload
+
 # 啟用模組
 ceph mgr module enable prometheus
 
 # 查看參數
 sudo ceph config-key get config/mgr/mgr/prometheus/server_addr
+
 ```
 
 觀察
