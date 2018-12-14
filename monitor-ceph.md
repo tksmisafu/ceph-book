@@ -66,5 +66,49 @@ sent: 1; skipped: 0; total: 1
 [http://docs.ceph.com/docs/master/mgr/zabbix/](http://docs.ceph.com/docs/master/mgr/zabbix/)
 {% endhint %}
 
+## Prometheus 監控 Ceph
+
+### Ceph mon 端
+
+設定
+
+```bash
+# 設定參數
+ceph config set mgr mgr/prometheus/server_addr 192.168.100.170
+ceph config set mgr mgr/prometheus/server_port 9283
+
+# 啟用模組
+ceph mgr module enable prometheus
+
+# 查看參數
+sudo ceph config-key get config/mgr/mgr/prometheus/server_addr
+```
+
+觀察
+
+```bash
+sudo netstat -ntlp |grep 9283
+iptables -L -n
+
+```
+
+### Prometheus server 端
+
+設定
+
+```text
+vi prometheus.yml
+# 新增
+  - job_name: 'ceph'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['192.168.100.170:9283']
+      
+設定後，重啟 prometheus service
+```
+
 
 

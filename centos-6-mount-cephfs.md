@@ -44,6 +44,11 @@ sudo ceph-fuse -m ceph-mds-ip:6789,ceph-mds-ip2:6789 -r /subdir /mnt/cephfs/
 sudo echo "ceph-fuse -m ceph-mds-ip:6789,ceph-mds-ip2:6789 -r /subdir /mnt/mycephfs/" >> /etc/rc.local
 
 # 如有需要進行 umount
-$ fusermount -u /mnt/mycephfs/
+fusermount -u /mnt/mycephfs/
+
+# 如遇到 fusermount: failed to unmount /mnt/cephfs: Device or resource busy
+fusermount -zu /mnt/mycephfs/
 ```
+
+
 
